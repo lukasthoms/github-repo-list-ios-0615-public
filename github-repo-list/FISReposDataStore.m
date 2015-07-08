@@ -29,5 +29,19 @@
     return self;
 }
 
+- (void) refreshReposWithCompletion:(void (^)(BOOL))block {
+    [self.repositories removeAllObjects];
+    
+    [FISGithubAPIClient getGitHubReposWithConpletion:^(NSArray *repos) {
+        for (NSDictionary *repo in repos) {
+            FISGithubRepository *newRepo = [FISGithubRepository repositoryFromJSON:repo];
+            [self.repositories addObject:newRepo];
+        }
+        block(YES);
+    }];
+
+}
+
+
 
 @end

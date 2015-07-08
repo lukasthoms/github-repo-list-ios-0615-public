@@ -7,8 +7,12 @@
 //
 
 #import "FISReposTableViewController.h"
+#import "FISReposDataStore.h"
 
 @interface FISReposTableViewController ()
+
+@property (strong, nonatomic) NSArray *repos;
+
 @end
 
 @implementation FISReposTableViewController
@@ -28,6 +32,15 @@
 
     self.tableView.accessibilityIdentifier = @"Repo Table View";
     self.tableView.accessibilityLabel=@"Repo Table View";
+    
+    FISReposDataStore *dataStore = [FISReposDataStore sharedDataStore];
+    
+    [dataStore refreshReposWithCompletion:^(BOOL succeeded) {
+        self.repos = dataStore.repositories;
+        [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    
+    }];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -51,7 +64,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return self.repos.count;
     // Return the number of rows in the section.
 }
 
@@ -60,7 +73,9 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"basicCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    FISGithubRepository *repo = self.repos[indexPath.row];
+    
+    cell.textLabel.text = repo.fullName;
     
     return cell;
 }

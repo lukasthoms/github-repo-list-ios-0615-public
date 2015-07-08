@@ -10,4 +10,12 @@
 
 @interface FISGithubRepository : NSObject
 
+@property (strong, nonatomic) NSString *fullName;
+@property (strong, nonatomic) NSURL *htmlURL;
+@property (strong, nonatomic) NSString *repositoryID;
+
++ (FISGithubRepository*) repositoryFromJSON:(NSDictionary*)dictionary;
+
+- (BOOL) isEqual:(id)object;
+
 @end

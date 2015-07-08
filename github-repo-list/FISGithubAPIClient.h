@@ -10,5 +10,6 @@
 
 @interface FISGithubAPIClient : NSObject
 
++ (void) getGitHubReposWithConpletion: (void (^) (NSArray *repos))block;
 
 @end
